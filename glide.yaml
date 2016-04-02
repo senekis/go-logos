@@ -1,0 +1,5 @@
+package: authylogos
+import:
+- package: github.com/disintegration/imaging
+- package: github.com/golang/freetype
+- package: golang.org/x/image

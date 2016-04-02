@@ -1,0 +1,16 @@
+hash: 8d26c9026d430e3d57acf36336481645b69f6858b18339e5c06c47eb0caba193
+updated: 2016-04-01T13:28:13.106338083-05:00
+imports:
+- name: github.com/disintegration/imaging
+  version: d8bbae1de109b518dabc98c6c1633eb358c148a4
+- name: github.com/golang/freetype
+  version: f9531a36062a85d4cef2daae173a3c9a35ae9f17
+  subpackages:
+  - truetype
+  - raster
+- name: golang.org/x/image
+  version: 00fe24ef7be9c01d8b3e59b7ccbdbc7a9b7ff4b6
+  subpackages:
+  - font
+  - math/fixed
+devImports: []
