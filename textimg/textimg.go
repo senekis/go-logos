@@ -11,26 +11,47 @@ import (
 	"github.com/golang/freetype/truetype"
 )
 
-// TextConf set font conf, dpi and image height
-type TextConf struct {
-	fontPath    string
-	fontSize    float64
-	fontSpacing float64
-	imageHeight int
-	dpi         float64
-}
-
 var (
-	config    TextConf
-	fontToUse *truetype.Font
+	fontPath = "textimg/Roboto-Regular.ttf"
+	// font size in points
+	fontSize float64 = 100
+	// line spacing (e.g. 2 means double spaced)
+	fontSpacing = 1.2
+	fontToUse   *truetype.Font
 
+	imageHeight         = 120
+	dpi         float64 = 72
 	// Logger set the logger
 	Logger = log.New(os.Stderr, "[textimg] ", log.LstdFlags)
 )
 
-// Setup configuration for Font, imageHeight and dpi
-func Setup(cfg TextConf) {
-	fontBytes, err := ioutil.ReadFile(cfg.fontPath)
+// SetFontPath allow to configure the font file to use
+func SetFontPath(path string) {
+	fontPath = path
+}
+
+// SetFontSize allow to configure the font size in points
+func SetFontSize(size float64) {
+	fontSize = size
+}
+
+// SetFontSpacing allow to configure the line spacing
+func SetFontSpacing(spacing float64) {
+	fontSpacing = spacing
+}
+
+// SetImageHeight configure the image height
+func SetImageHeight(height int) {
+	imageHeight = height
+}
+
+// SetDPI configure screen resolution in Dots Per Inch
+func SetDPI(dpiValue float64) {
+	dpi = dpiValue
+}
+
+func loadFont() {
+	fontBytes, err := ioutil.ReadFile(fontPath)
 
 	if err != nil {
 		Logger.Fatal(err)
@@ -40,8 +61,6 @@ func Setup(cfg TextConf) {
 	if err != nil {
 		Logger.Fatal(err)
 	}
-
-	config = cfg
 }
 
 // Generate convert the text into an image
@@ -49,20 +68,20 @@ func Generate(text string) *image.RGBA {
 	imageWidth := calculateWidth(text)
 
 	// Initialize the context.
-	fg, bg := image.Black, image.Transparent
-	rgba := image.NewRGBA(image.Rect(0, 0, imageWidth, config.imageHeight))
+	fg, bg := image.Black, image.White
+	rgba := image.NewRGBA(image.Rect(0, 0, imageWidth, imageHeight))
 
 	draw.Draw(rgba, rgba.Bounds(), bg, image.ZP, draw.Src)
 
 	c := freetype.NewContext()
-	c.SetDPI(config.dpi)
+	c.SetDPI(dpi)
 	c.SetFont(fontToUse)
-	c.SetFontSize(config.fontSize)
+	c.SetFontSize(fontSize)
 	c.SetClip(rgba.Bounds())
 	c.SetDst(rgba)
 	c.SetSrc(fg)
 
-	pt := freetype.Pt(10, 10+int(c.PointToFixed(config.fontSize)>>6))
+	pt := freetype.Pt(0, int(c.PointToFixed(fontSize)>>6))
 	_, err := c.DrawString(text, pt)
 	if err != nil {
 		Logger.Fatal(err)
@@ -74,11 +93,11 @@ func Generate(text string) *image.RGBA {
 func calculateWidth(text string) int {
 	// Truetype stuff
 	opts := truetype.Options{}
-	opts.Size = config.fontSize
+	opts.Size = fontSize
 	face := truetype.NewFace(fontToUse, &opts)
 
-	spacing64 := config.fontSpacing * 64.0
-	width64 := spacing64 * 2.0
+	spacing64 := fontSpacing * 64.0
+	width64 := 0.0
 
 	for _, x := range text {
 		awidth, ok := face.GlyphAdvance(rune(x))
@@ -93,5 +112,5 @@ func calculateWidth(text string) int {
 }
 
 func init() {
-	Setup(TextConf{"textimg/Roboto-Regular.ttf", 100, 1.2, 120, 72})
+	loadFont()
 }

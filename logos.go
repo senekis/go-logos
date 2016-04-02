@@ -31,7 +31,13 @@ func main() {
 	textimg.Logger = Logger
 	rgba := textimg.Generate(text)
 
-	saveImage(rgba, "out.png")
+	saveImage(rgba, "basic_image.png")
+
+	firstLetter := string(text[0])
+	textimg.SetImageHeight(81)
+	textimg.SetFontSize(60)
+	rgba = textimg.Generate(firstLetter)
+	saveImage(rgba, "first_letter.png")
 }
 
 // saveImage save image in PNG format
