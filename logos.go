@@ -2,13 +2,11 @@ package main
 
 import (
 	"bufio"
-	"fmt"
 	"image"
 	"image/draw"
 	"image/png"
 	"log"
 	"os"
-	"strings"
 
 	"github.com/senekis/logos/textimg"
 )
@@ -19,25 +17,18 @@ var (
 )
 
 func main() {
-	fmt.Print("Enter text to convert: ")
-
-	var text string
-	n, err := fmt.Scanf("%s\n", &text)
-	if err != nil {
-		fmt.Println(n, err)
-	}
-
-	text = strings.ToUpper(text)
+	text := os.Args[1]
 
 	textimg.Logger = Logger
-	rgba := textimg.Generate(text)
+	textimg.SetFontSize(60)
+
+	// text = strings.ToUpper(text)
+	rgba := textimg.Generate(text, image.Rect(0, 0, 200, 200))
 
 	saveImage(rgba, "basic_image.png")
 
 	firstLetter := string(text[0])
-	textimg.SetImageHeight(81)
-	textimg.SetFontSize(60)
-	rgba = textimg.Generate(firstLetter)
+	rgba = textimg.Generate(firstLetter, image.Rect(0, 0, 80, 80))
 
 	file, err := os.Open("mask.png")
 	if err != nil {
