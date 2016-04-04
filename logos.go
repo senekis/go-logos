@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"image"
+	"image/draw"
 	"image/png"
 	"log"
 	"os"
@@ -37,11 +38,29 @@ func main() {
 	textimg.SetImageHeight(81)
 	textimg.SetFontSize(60)
 	rgba = textimg.Generate(firstLetter)
-	saveImage(rgba, "first_letter.png")
+
+	file, err := os.Open("mask.png")
+	if err != nil {
+		Logger.Fatal(err)
+	}
+
+	mask, err := png.Decode(bufio.NewReader(file))
+	if err != nil {
+		Logger.Fatal(err)
+	}
+
+	maskRgba := mask.(*image.NRGBA)
+	point := image.Point{
+		X: (rgba.Bounds().Dx() / 2) - (maskRgba.Bounds().Dx() / 2),
+		Y: 0,
+	}
+
+	draw.Draw(maskRgba, mask.Bounds(), rgba, point, draw.Over)
+	saveImage(maskRgba, "first_letter.png")
 }
 
 // saveImage save image in PNG format
-func saveImage(rgba *image.RGBA, outputFilename string) {
+func saveImage(img image.Image, outputFilename string) {
 	// Save that RGBA image to disk.
 	outFile, err := os.Create(outputFilename)
 	if err != nil {
@@ -50,7 +69,7 @@ func saveImage(rgba *image.RGBA, outputFilename string) {
 
 	defer outFile.Close()
 	b := bufio.NewWriter(outFile)
-	err = png.Encode(b, rgba)
+	err = png.Encode(b, img)
 	if err != nil {
 		Logger.Fatal(err)
 	}
