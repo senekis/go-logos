@@ -64,7 +64,6 @@ func loadFont() {
 
 // Generate convert the text into an image
 func Generate(text string, r image.Rectangle) *image.RGBA {
-	// Initialize the context.
 	fg, bg := image.Black, image.White
 	rgba := image.NewRGBA(r)
 	draw.Draw(rgba, rgba.Bounds(), bg, image.ZP, draw.Src)
