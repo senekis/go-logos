@@ -1,5 +1,5 @@
-hash: 8d26c9026d430e3d57acf36336481645b69f6858b18339e5c06c47eb0caba193
-updated: 2016-04-01T13:28:13.106338083-05:00
+hash: 62fb9dac7417c5e4e3f467e73c2715ca77d48391a3006150bc7c4e82d2474069
+updated: 2016-04-03T21:33:05.936469695-05:00
 imports:
 - name: github.com/disintegration/imaging
   version: d8bbae1de109b518dabc98c6c1633eb358c148a4
@@ -8,8 +8,12 @@ imports:
   subpackages:
   - truetype
   - raster
+- name: github.com/llgcode/draw2d
+  version: 0545b30698e15720d228aa99e3b48151ee7e0943
+  subpackages:
+  - samples
 - name: golang.org/x/image
-  version: 00fe24ef7be9c01d8b3e59b7ccbdbc7a9b7ff4b6
+  version: 8b5ac8f8e598a62e443f4797fd70f6387ce04ab8
   subpackages:
   - font
   - math/fixed

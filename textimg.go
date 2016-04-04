@@ -14,7 +14,7 @@ import (
 )
 
 var (
-	fontPath = "textimg/Roboto-Regular.ttf"
+	fontPath = "Roboto-Regular.ttf"
 	// font size in points
 	fontSize float64 = 100
 	// line spacing (e.g. 2 means double spaced)

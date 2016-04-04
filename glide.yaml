@@ -1,5 +1,6 @@
-package: authylogos
+package: textimg
 import:
 - package: github.com/disintegration/imaging
 - package: github.com/golang/freetype
 - package: golang.org/x/image
+- package: github.com/llgcode/draw2d
